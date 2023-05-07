@@ -17,15 +17,16 @@ const (
 
 // AwaitingReplyToPath returns just path part of command state
 func AwaitingReplyToPath(awaitingReplyTo string) string {
-	s := strings.Split(awaitingReplyTo, AwaitingReplyToPath2QuerySeparator)
-	return s[0]
+	if i := strings.Index(awaitingReplyTo, AwaitingReplyToPath2QuerySeparator); i >= 0 {
+		return awaitingReplyTo[:i]
+	}
+	return awaitingReplyTo
 }
 
 // AwaitingReplyToQuery returns just query part of command state
 func AwaitingReplyToQuery(awaitingReplyTo string) string {
-	s := strings.Split(awaitingReplyTo, AwaitingReplyToPath2QuerySeparator)
-	if len(s) > 1 {
-		return s[1]
+	if i := strings.Index(awaitingReplyTo, AwaitingReplyToPath2QuerySeparator); i >= 0 {
+		return awaitingReplyTo[i+1:]
 	}
 	return ""
 }

@@ -5,7 +5,7 @@ import (
 )
 
 func TestBotChatEntity_PopStepsFromAwaitingReplyUpToSpecificParent(t *testing.T) {
-	chatEntity := BotChatData{}
+	chatEntity := BotChatBaseData{}
 
 	chatEntity.AwaitingReplyTo = "step1/step2/step3"
 	chatEntity.PopStepsFromAwaitingReplyUpToSpecificParent("step2")

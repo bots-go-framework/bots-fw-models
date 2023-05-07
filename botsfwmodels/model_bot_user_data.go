@@ -4,7 +4,7 @@ import "github.com/strongo/app/user"
 
 // BotUserData hold common properties for bot user entities
 type BotUserData struct {
-	BotEntity
+	BotBaseData
 	user.LastLogin
 
 	FirstName string // required

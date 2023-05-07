@@ -7,9 +7,9 @@ import (
 	"time"
 )
 
-// BotChatData hold common properties for bot chat entities not specific to any platform
-type BotChatData struct {
-	BotEntity
+// BotChatBaseData hold common properties for bot chat entities not specific to any platform
+type BotChatBaseData struct {
+	BotBaseData
 	AppUserIntIDs []int64
 	BotID         string `datastore:",noindex"`
 	//
@@ -27,30 +27,34 @@ type BotChatData struct {
 	LanguageCodes     []string  `datastore:",noindex"` // UI languages
 }
 
-var _ BotChat = (*BotChatData)(nil)
+var _ BotChat = (*BotChatBaseData)(nil)
+
+func (e *BotChatBaseData) Base() *BotChatBaseData {
+	return e
+}
 
 // GetBotID returns bot ID
-func (e *BotChatData) GetBotID() string {
+func (e *BotChatBaseData) GetBotID() string {
 	return e.BotID
 }
 
 // IsGroupChat indicates if it is a group chat
-func (e *BotChatData) IsGroupChat() bool {
+func (e *BotChatBaseData) IsGroupChat() bool {
 	return e.IsGroup
 }
 
 // SetIsGroupChat marks chat as a group one
-func (e *BotChatData) SetIsGroupChat(v bool) {
+func (e *BotChatBaseData) SetIsGroupChat(v bool) {
 	e.IsGroup = v
 }
 
 // SetBotID sets bot ID
-func (e *BotChatData) SetBotID(botID string) {
+func (e *BotChatBaseData) SetBotID(botID string) {
 	e.BotID = botID
 }
 
 // AddClientLanguage adds client UI language
-func (e *BotChatData) AddClientLanguage(languageCode string) (changed bool) {
+func (e *BotChatBaseData) AddClientLanguage(languageCode string) (changed bool) {
 	if languageCode == "" || languageCode == "root" {
 		return false
 	}
@@ -63,28 +67,28 @@ func (e *BotChatData) AddClientLanguage(languageCode string) (changed bool) {
 	return false
 }
 
-// func (e *BotChatData) GetBotUserIntID() int {
+// func (e *BotChatBaseData) GetBotUserIntID() int {
 // 	panic("Should be overwritten in subclass")
 // }
 //
-// func (e *BotChatData) GetBotUserStringID() string {
+// func (e *BotChatBaseData) GetBotUserStringID() string {
 // 	panic("Should be overwritten in subclass")
 // }
 
 // SetBotUserID sets bot user ID
-func (e *BotChatData) SetBotUserID(id interface{}) {
+func (e *BotChatBaseData) SetBotUserID(id interface{}) {
 	panic(fmt.Sprintf("Should be overwritten in subclass, got: %T=%v", id, id))
 }
 
 // SetDtLastInteraction sets date time of last interaction
-func (e *BotChatData) SetDtLastInteraction(v time.Time) {
+func (e *BotChatBaseData) SetDtLastInteraction(v time.Time) {
 	e.DtLastInteraction = v
 	e.InteractionsCount++
 }
 
 // GetGaClientID returns Google Analytics client UUID
 // TODO: random implementation should not be here in this module so we do not have dep on random?
-//func (e *BotChatData) GetGaClientID() string {
+//func (e *BotChatBaseData) GetGaClientID() string {
 //	if len(e.GaClientID) == 0 {
 //		e.GaClientID = []byte(random.ID(32))
 //	}
@@ -92,37 +96,37 @@ func (e *BotChatData) SetDtLastInteraction(v time.Time) {
 //}
 
 // SetDtUpdateToNow mark entity updated with now
-func (e *BotChatData) SetDtUpdateToNow() {
+func (e *BotChatBaseData) SetDtUpdateToNow() {
 	e.DtUpdated = time.Now()
 }
 
 // GetAwaitingReplyTo returns current state
-func (e *BotChatData) GetAwaitingReplyTo() string {
+func (e *BotChatBaseData) GetAwaitingReplyTo() string {
 	return e.AwaitingReplyTo
 }
 
 // SetAwaitingReplyTo sets current state
-func (e *BotChatData) SetAwaitingReplyTo(value string) {
+func (e *BotChatBaseData) SetAwaitingReplyTo(value string) {
 	e.AwaitingReplyTo = strings.TrimLeft(value, "/")
 }
 
 // GetPreferredLanguage returns preferred language
-func (e *BotChatData) GetPreferredLanguage() string {
+func (e *BotChatBaseData) GetPreferredLanguage() string {
 	return e.PreferredLanguage
 }
 
 // SetPreferredLanguage sets preferred language
-func (e *BotChatData) SetPreferredLanguage(value string) {
+func (e *BotChatBaseData) SetPreferredLanguage(value string) {
 	e.PreferredLanguage = value
 }
 
 // IsAwaitingReplyTo returns true if bot us awaiting reply to a specific command
-func (e *BotChatData) IsAwaitingReplyTo(code string) bool {
+func (e *BotChatBaseData) IsAwaitingReplyTo(code string) bool {
 	awaitingReplyToPath := e.getAwaitingReplyToPath()
 	return awaitingReplyToPath == code || strings.HasSuffix(awaitingReplyToPath, AwaitingReplyToPathSeparator+code)
 }
 
-func (e *BotChatData) getAwaitingReplyToPath() string {
+func (e *BotChatBaseData) getAwaitingReplyToPath() string {
 	pathAndQuery := strings.SplitN(e.AwaitingReplyTo, AwaitingReplyToPath2QuerySeparator, 2)
 	if len(pathAndQuery) > 1 {
 		return pathAndQuery[0]
@@ -131,7 +135,7 @@ func (e *BotChatData) getAwaitingReplyToPath() string {
 }
 
 // PopStepsFromAwaitingReplyUpToSpecificParent go back in state
-func (e *BotChatData) PopStepsFromAwaitingReplyUpToSpecificParent(step string) {
+func (e *BotChatBaseData) PopStepsFromAwaitingReplyUpToSpecificParent(step string) {
 	awaitingReplyTo := e.AwaitingReplyTo
 	pathAndQuery := strings.SplitN(awaitingReplyTo, AwaitingReplyToPath2QuerySeparator, 2)
 	path := pathAndQuery[0]
@@ -156,7 +160,7 @@ func (e *BotChatData) PopStepsFromAwaitingReplyUpToSpecificParent(step string) {
 }
 
 // PushStepToAwaitingReplyTo go down in state
-func (e *BotChatData) PushStepToAwaitingReplyTo(step string) {
+func (e *BotChatBaseData) PushStepToAwaitingReplyTo(step string) {
 	awaitingReplyTo := e.AwaitingReplyTo
 	pathAndQuery := strings.SplitN(awaitingReplyTo, AwaitingReplyToPath2QuerySeparator, 2)
 	if len(pathAndQuery) > 1 { // Has query part - something after "?" character
@@ -175,7 +179,7 @@ func (e *BotChatData) PushStepToAwaitingReplyTo(step string) {
 }
 
 // AddWizardParam adds context param to state
-func (e *BotChatData) AddWizardParam(key, value string) {
+func (e *BotChatBaseData) AddWizardParam(key, value string) {
 	awaitingReplyTo := e.GetAwaitingReplyTo()
 	awaitingURL, err := url.Parse(awaitingReplyTo)
 	if err != nil {
@@ -188,7 +192,7 @@ func (e *BotChatData) AddWizardParam(key, value string) {
 }
 
 // GetWizardParam returns state param value
-func (e *BotChatData) GetWizardParam(key string) string {
+func (e *BotChatBaseData) GetWizardParam(key string) string {
 	u, err := url.Parse(e.GetAwaitingReplyTo())
 	if err != nil {
 		return ""

@@ -6,6 +6,8 @@ import (
 
 // BotChat provides data about bot chat
 type BotChat interface {
+	Base() *BotChatBaseData
+
 	GetBotID() string
 	SetBotID(botID string)
 
