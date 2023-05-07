@@ -42,7 +42,7 @@ type BotChat interface {
 	GetWizardParam(key string) string
 	PopStepsFromAwaitingReplyUpToSpecificParent(code string)
 	PushStepToAwaitingReplyTo(code string)
-	GetGaClientID() string
+	//GetGaClientID() string
 }
 
 // NewChatID create a new bot chat ID, returns string
