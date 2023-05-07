@@ -1,4 +1,4 @@
-module github.com/bots-go-framework/bots-fw-models
+module github.com/bots-go-framework/bots-fw-store
 
 go 1.20
 

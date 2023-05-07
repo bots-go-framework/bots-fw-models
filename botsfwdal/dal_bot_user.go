@@ -2,7 +2,7 @@ package botsfwdal
 
 import (
 	"context"
-	"github.com/bots-go-framework/bots-fw-models/botsfwmodels"
+	"github.com/bots-go-framework/bots-fw-store/botsfwmodels"
 )
 
 //type UserID interface {
