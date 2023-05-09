@@ -14,10 +14,10 @@ type BotChatStore interface {
 	// SaveBotChat saves bot chat record
 	SaveBotChat(c context.Context, botID, botChatID string, chatEntity botsfwmodels.BotChat) error
 
-	// NewBotChatEntity creates new bot chat record
-	//NewBotChatEntity(c context.Context, botID string, botChat botsfw.WebhookChat, appUserID, botUserID string, isAccessGranted bool) botsfwmodels.BotChat
-
 	// Close closes the store, e.g. commits sends a signal to commit transaction
 	// TODO: Consider to remove this method if possible
 	Close(c context.Context) error // TODO: Was io.Closer, should it?
+
+	// NewBotChatEntity creates new bot chat record
+	// NewBotChatEntity(c context.Context, botID string, botChat botsfw.WebhookChat, appUserID, botUserID string, isAccessGranted bool) botsfwmodels.BotChat
 }

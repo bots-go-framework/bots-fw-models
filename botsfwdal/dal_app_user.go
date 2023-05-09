@@ -9,13 +9,16 @@ import (
 type AppUserStore interface {
 
 	// CreateAppUser creates a new app user record in a persistent data store
+	// The `botID` parameter is used to pass to a DB provider to get a database connection
 	CreateAppUser(c context.Context, botID string, appUser botsfwmodels.BotAppUser) (appUserID string, err error)
 
 	// SaveAppUser saves app user data into a persistent data store
-	SaveAppUser(c context.Context, appUserID string, appUserData botsfwmodels.BotAppUser) error
+	// The `botID` parameter is used to pass to a DB provider to get a database connection
+	SaveAppUser(c context.Context, botID, appUserID string, appUserData botsfwmodels.BotAppUser) error
 
 	// GetAppUserByID retrieves app user data from a persistent data store
-	GetAppUserByID(c context.Context, appUserID string, appUser botsfwmodels.BotAppUser) error
+	// The `botID` parameter is used to pass to a DB provider to get a database connection
+	GetAppUserByID(c context.Context, botID, appUserID string, appUser botsfwmodels.BotAppUser) error
 }
 
 //// BotAppUserStore interface for storing user information to persistent store

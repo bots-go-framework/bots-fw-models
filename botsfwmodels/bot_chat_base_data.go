@@ -9,9 +9,10 @@ import (
 
 // BotChatBaseData hold common properties for bot chat entities not specific to any platform
 type BotChatBaseData struct {
+	BotID  string `datastore:",noindex"`
+	ChatID string `datastore:",noindex"` // New field that is not populated before
 	BotBaseData
 	AppUserIntIDs []int64
-	BotID         string `datastore:",noindex"`
 	//
 	IsGroup bool   `datastore:",noindex,omitempty"`
 	Type    string `datastore:",noindex,omitempty"`
@@ -38,6 +39,21 @@ func (e *BotChatBaseData) GetBotID() string {
 	return e.BotID
 }
 
+// SetBotID sets bot ID
+func (e *BotChatBaseData) SetBotID(botID string) {
+	e.BotID = botID
+}
+
+// GetChatID returns chat ID
+func (e *BotChatBaseData) GetChatID() string {
+	return e.ChatID
+}
+
+// SetChatID sets chat ID
+func (e *BotChatBaseData) SetChatID(chatID string) {
+	e.ChatID = chatID
+}
+
 // IsGroupChat indicates if it is a group chat
 func (e *BotChatBaseData) IsGroupChat() bool {
 	return e.IsGroup
@@ -46,11 +62,6 @@ func (e *BotChatBaseData) IsGroupChat() bool {
 // SetIsGroupChat marks chat as a group one
 func (e *BotChatBaseData) SetIsGroupChat(v bool) {
 	e.IsGroup = v
-}
-
-// SetBotID sets bot ID
-func (e *BotChatBaseData) SetBotID(botID string) {
-	e.BotID = botID
 }
 
 // AddClientLanguage adds client UI language

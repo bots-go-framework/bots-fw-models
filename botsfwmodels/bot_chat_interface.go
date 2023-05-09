@@ -6,15 +6,17 @@ import (
 
 // BotChat provides data about bot chat
 type BotChat interface {
-	Base() *BotChatBaseData
+	Base() *BotChatBaseData // TODO: Document why this is needed or remove
 
-	GetBotID() string
+	GetBotID() (botID string)
 	SetBotID(botID string)
 
-	// GetAppUserID returns app user ID
-	GetAppUserID() string
+	//GetChatID() (chatID string)
+	//SetChatID(chatID string)
 
-	SetAppUserIntID(id int64)
+	// GetAppUserID returns app user ID
+	GetAppUserID() (appUserID string)
+	SetAppUserID(appUserID string)
 
 	AddClientLanguage(languageCode string) (changed bool)
 

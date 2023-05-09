@@ -13,14 +13,15 @@ import (
 type BotUserStore interface {
 
 	// GetBotUserByID returns bot user data
-	GetBotUserByID(c context.Context, botUserID string) (botsfwmodels.BotUser, error)
+	// The `botID` parameter is used to pass to a DB provider to get a database connection
+	GetBotUserByID(c context.Context, botID, botUserID string) (botsfwmodels.BotUser, error)
 
 	// SaveBotUser saves bot user data
-	SaveBotUser(c context.Context, botUserID string, botUserData botsfwmodels.BotUser) error
+	// The `botID` parameter is used to pass to a DB provider to get a database connection
+	SaveBotUser(c context.Context, botID, botUserID string, botUserData botsfwmodels.BotUser) error
 
-	// CreateBotUser creates new bot user in DB
-	// TODO: should be moved to bots-fw-* package or documented why we need a dedicated method for this
-	//CreateBotUser(c context.Context, botID string, apiUser botsfw.WebhookActor) (botsfwmodels.BotUser, error)
+	// CreateBotUser creates new bot user in DB - moved to bots-fw-* packages
+	// CreateBotUser(c context.Context, botID string, apiUser botsfw.WebhookActor) (botsfwmodels.BotUser, error)
 
 	//io.Closer
 }
