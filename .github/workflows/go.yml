@@ -2,7 +2,7 @@ name: Go CI
 
 on:
   push:
-    branches_ignore:
+    branches-ignore:
       - renovate/**
     tags:
       - 'v[0-9]+\.[0-9]+\.[0-9]+'
