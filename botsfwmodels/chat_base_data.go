@@ -7,24 +7,35 @@ import (
 
 // ChatBaseData hold common properties for bot chat entities not specific to any platform
 type ChatBaseData struct {
-	BotID  string `datastore:",noindex"`
-	ChatID string `datastore:",noindex"` // New field that is not populated before
+	ChatKey // Have it for convenience
+
 	BotBaseData
-	AppUserIntIDs []int64
-	//
-	IsGroup bool   `datastore:",noindex,omitempty"`
-	Type    string `datastore:",noindex,omitempty"`
-	Title   string `datastore:",noindex,omitempty"`
-	//
 	chatState
-	//
-	PreferredLanguage string    `datastore:",noindex,omitempty"`
-	GaClientID        []byte    `datastore:",noindex,omitempty"`
-	DtLastInteraction time.Time `datastore:",omitempty"`
-	InteractionsCount int       `datastore:",omitempty"`
-	DtForbidden       time.Time `datastore:",omitempty"`
-	DtForbiddenLast   time.Time `datastore:",noindex,omitempty"`
-	LanguageCodes     []string  `datastore:",noindex"` // UI languages
+	chatSettings
+
+	// AppUserIntIDs is kept for legacy reasons
+	// Deprecated: replace with `AppUserIDs []string`
+	AppUserIntIDs []int64 // Legacy
+
+	// IsGroup indicates if bot is added/used in a group chat
+	IsGroup bool `dalgo:",noindex,omitempty" datastore:",noindex,omitempty" firestore:",noindex,omitempty"`
+
+	// Type - TODO: document what is it
+	Type string `dalgo:",noindex,omitempty" datastore:",noindex,omitempty" firestore:",noindex,omitempty"`
+
+	// Title stores a title of a chat if bot platforms supports named chats
+	Title string `dalgo:",noindex,omitempty" datastore:",noindex,omitempty" firestore:",noindex,omitempty"`
+
+	// GAClientID is Google Analytics client ID
+	// Deprecated: use GAClientIDs AnalyticsClientIDs
+	GaClientID []byte `dalgo:",noindex,omitempty" datastore:",noindex,omitempty" firestore:",noindex,omitempty"`
+	// AnalyticsClientIDs stores IDs of analytics clients. For example {"GA": "1234567890.1234567890"}
+	AnalyticsClientIDs map[string]string `dalgo:",noindex,omitempty" datastore:",noindex,omitempty" firestore:",noindex,omitempty"`
+
+	DtLastInteraction time.Time `dalgo:",omitempty" datastore:",omitempty" firestore:",omitempty"`
+	InteractionsCount int       `dalgo:",omitempty" datastore:",omitempty" firestore:",omitempty"`
+	DtForbidden       time.Time `dalgo:",omitempty" datastore:",omitempty" firestore:",omitempty"`
+	DtForbiddenLast   time.Time `dalgo:",omitempty" datastore:",omitempty" firestore:",omitempty"`
 }
 
 var _ ChatData = (*ChatBaseData)(nil)
@@ -63,20 +74,6 @@ func (e *ChatBaseData) SetIsGroupChat(v bool) {
 	e.IsGroup = v
 }
 
-// AddClientLanguage adds client UI language
-func (e *ChatBaseData) AddClientLanguage(languageCode string) (changed bool) {
-	if languageCode == "" || languageCode == "root" {
-		return false
-	}
-	for _, lc := range e.LanguageCodes {
-		if lc == languageCode {
-			return false
-		}
-	}
-	e.LanguageCodes = append(e.LanguageCodes, languageCode)
-	return false
-}
-
 // func (e *ChatBaseData) GetBotUserIntID() int {
 // 	panic("Should be overwritten in subclass")
 // }
@@ -108,14 +105,4 @@ func (e *ChatBaseData) SetDtLastInteraction(v time.Time) {
 // SetDtUpdateToNow mark entity updated with now
 func (e *ChatBaseData) SetDtUpdateToNow() {
 	e.DtUpdated = time.Now()
-}
-
-// GetPreferredLanguage returns preferred language
-func (e *ChatBaseData) GetPreferredLanguage() string {
-	return e.PreferredLanguage
-}
-
-// SetPreferredLanguage sets preferred language
-func (e *ChatBaseData) SetPreferredLanguage(value string) {
-	e.PreferredLanguage = value
 }
