@@ -4,8 +4,8 @@ import (
 	"time"
 )
 
-// BotChat provides data about bot chat
-type BotChat interface {
+// BotChatData provides data about bot chat
+type BotChatData interface {
 	Base() *BotChatBaseData // TODO: Document why this is needed or remove
 
 	GetBotID() (botID string)
