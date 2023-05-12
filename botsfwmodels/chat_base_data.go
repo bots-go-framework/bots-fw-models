@@ -11,10 +11,15 @@ var _ ChatData = (*ChatBaseData)(nil)
 
 // ChatBaseData hold common properties for bot chat entities not specific to any platform
 type ChatBaseData struct {
-	ChatKey          // Have it for convenience
-	BotUserID string // We want it to be indexed and not to omit empty
+	changed bool // if true needs to be saved
 
-	changed bool
+	ChatKey // BotID & ChatID
+
+	// BotUserID is and ID of a bot user who owns this chat
+	BotUserID string // We want it to be indexed and not to omit empty, so we can find chats without bot user assigned.
+
+	// BotUserIDs keeps ids of bot users who are members of a group chat
+	BotUserIDs []string `dalgo:",omitempty" datastore:",omitempty" firestore:",omitempty"`
 
 	BotBaseData
 	chatState
@@ -36,14 +41,20 @@ type ChatBaseData struct {
 	// GAClientID is Google Analytics client ID
 	// Deprecated: use GAClientIDs AnalyticsClientIDs
 	GaClientID []byte `dalgo:",noindex,omitempty" datastore:",noindex,omitempty" firestore:",omitempty"`
+
 	// AnalyticsClientIDs stores IDs of analytics clients. For example {"GA": "1234567890.1234567890"}
 	AnalyticsClientIDs map[string]string `dalgo:",noindex,omitempty" datastore:",noindex,omitempty" firestore:",omitempty"`
 
 	// DtLastInteraction must be set through SetDtLastInteraction() as it also increments InteractionsCount
 	DtLastInteraction time.Time `dalgo:",omitempty" datastore:",omitempty" firestore:",omitempty"`
-	InteractionsCount int       `dalgo:",omitempty" datastore:",omitempty" firestore:",omitempty"`
 
-	DtForbidden     time.Time `dalgo:",omitempty" datastore:",omitempty" firestore:",omitempty"`
+	// InteractionsCount is a number of interactions with a bot in this chat
+	InteractionsCount int `dalgo:",omitempty" datastore:",omitempty" firestore:",omitempty"`
+
+	// DtForbidden is a time when bot was forbidden to interact with a chat
+	DtForbidden time.Time `dalgo:",omitempty" datastore:",omitempty" firestore:",omitempty"`
+
+	// DtForbiddenLast needs documentation on intended usage. TODO: Consider removing
 	DtForbiddenLast time.Time `dalgo:",omitempty" datastore:",omitempty" firestore:",omitempty"`
 }
 
