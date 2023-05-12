@@ -22,7 +22,7 @@ type ChatBaseData struct {
 
 	// AppUserIntIDs is kept for legacy reasons
 	// Deprecated: replace with `AppUserIDs []string`
-	AppUserIntIDs []int64 // Legacy
+	AppUserIntIDs []int64 `dalgo:",omitempty" datastore:",omitempty" firestore:",omitempty"`
 
 	// IsGroup indicates if bot is added/used in a group chat
 	IsGroup bool `dalgo:",noindex,omitempty" datastore:",noindex,omitempty" firestore:",omitempty"`
@@ -39,10 +39,12 @@ type ChatBaseData struct {
 	// AnalyticsClientIDs stores IDs of analytics clients. For example {"GA": "1234567890.1234567890"}
 	AnalyticsClientIDs map[string]string `dalgo:",noindex,omitempty" datastore:",noindex,omitempty" firestore:",omitempty"`
 
+	// DtLastInteraction must be set through SetDtLastInteraction() as it also increments InteractionsCount
 	DtLastInteraction time.Time `dalgo:",omitempty" datastore:",omitempty" firestore:",omitempty"`
 	InteractionsCount int       `dalgo:",omitempty" datastore:",omitempty" firestore:",omitempty"`
-	DtForbidden       time.Time `dalgo:",omitempty" datastore:",omitempty" firestore:",omitempty"`
-	DtForbiddenLast   time.Time `dalgo:",omitempty" datastore:",omitempty" firestore:",omitempty"`
+
+	DtForbidden     time.Time `dalgo:",omitempty" datastore:",omitempty" firestore:",omitempty"`
+	DtForbiddenLast time.Time `dalgo:",omitempty" datastore:",omitempty" firestore:",omitempty"`
 }
 
 func (e *ChatBaseData) Validate() error {

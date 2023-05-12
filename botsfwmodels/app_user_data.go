@@ -1,12 +1,17 @@
 package botsfwmodels
 
-import (
-	strongo "github.com/strongo/app"
-)
-
 // AppUserData holds information about bot app user
 type AppUserData interface {
-	strongo.AppUser
+
+	// LocaleSettings is an interface to set and get preferred locale
+	LocaleSettings
+
+	// SetNames sets user record name fields using information provided by bot platform
+	SetNames(first, last, user string)
+
+	// SetBotUserID associates bot user ID with an app user record
 	SetBotUserID(platform, botID, botUserID string)
+
+	// GetFullName returns full name of a user
 	GetFullName() string
 }
