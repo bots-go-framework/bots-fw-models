@@ -14,14 +14,15 @@ type BotUserStore interface {
 
 	// GetBotUserByID returns bot user data
 	// The `botID` parameter is used to pass to a DB provider to get a database connection
-	GetBotUserByID(c context.Context, botID, botUserID string) (botsfwmodels.BotUser, error)
+	// Should always return a valid bot user data object, even if it is emptu or an error occured
+	GetBotUserByID(c context.Context, botID, botUserID string) (botsfwmodels.BotUserData, error)
 
 	// SaveBotUser saves bot user data
 	// The `botID` parameter is used to pass to a DB provider to get a database connection
-	SaveBotUser(c context.Context, botID, botUserID string, botUserData botsfwmodels.BotUser) error
+	SaveBotUser(c context.Context, botID, botUserID string, botUserData botsfwmodels.BotUserData) error
 
 	// CreateBotUser creates new bot user in DB - moved to bots-fw-* packages
-	// CreateBotUser(c context.Context, botID string, apiUser botsfw.WebhookActor) (botsfwmodels.BotUser, error)
+	// CreateBotUser(c context.Context, botID string, apiUser botsfw.WebhookActor) (botsfwmodels.BotUserData, error)
 
 	//io.Closer
 }

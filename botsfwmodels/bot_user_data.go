@@ -2,7 +2,7 @@ package botsfwmodels
 
 import "github.com/strongo/app/user"
 
-var _ BotUser = (*BotUserBaseData)(nil)
+var _ BotUserData = (*BotUserBaseData)(nil)
 
 // BotUserBaseData hold common properties for bot user entities
 type BotUserBaseData struct {

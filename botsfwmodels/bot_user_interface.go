@@ -4,9 +4,9 @@ import (
 	"time"
 )
 
-// BotUser interface provides information about bot user
+// BotUserData interface provides information about bot user
 // This should be implemented by bot user record struct.
-type BotUser interface {
+type BotUserData interface {
 	// BaseData returns base data that should be implemented by all bot user structs
 	BaseData() *BotUserBaseData
 

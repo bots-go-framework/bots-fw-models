@@ -3,4 +3,6 @@ github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZb
 github.com/stretchr/testify v1.8.2 h1:+h33VjcLVPDHtOdpUCuF+7gSuG3yGIftsP1YvFihtJ8=
 github.com/strongo/app v0.4.0 h1:I3o7zWG1TBHe6Y/4iEwxtBLQnqH0B7xhMu7TPdbqJpI=
 github.com/strongo/app v0.4.0/go.mod h1:rh+WVQYPuxwCkC/s+2OBUYZuJHIoRbJM9uhCQ5juDLw=
+github.com/strongo/validation v0.0.1 h1:kBMqVLa73nT6FaWrMX5aPKbM4hcNqe6A519MoRXhLUY=
+github.com/strongo/validation v0.0.1/go.mod h1:euQ9ywYwBASSnCLSYOx8JW0u4/71yfbeZhBQJv93dZg=
 gopkg.in/yaml.v3 v3.0.1 h1:fxVm/GzAzEWqLHuvctI91KS9hhNmmWOoWu0XTYJS7CA=

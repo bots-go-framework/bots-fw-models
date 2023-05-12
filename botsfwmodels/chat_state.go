@@ -7,7 +7,12 @@ import (
 )
 
 type chatState struct {
-	AwaitingReplyTo string `dalgo:",noindex,omitempty" datastore:",noindex,omitempty" firestore:",noindex,omitempty"`
+	changed         bool
+	AwaitingReplyTo string `dalgo:",noindex,omitempty" datastore:",noindex,omitempty" firestore:",omitempty"`
+}
+
+func (e *chatState) IsChanged() bool {
+	return e.changed
 }
 
 // GetAwaitingReplyTo returns current state
@@ -18,6 +23,7 @@ func (e *chatState) GetAwaitingReplyTo() string {
 // SetAwaitingReplyTo sets current state
 func (e *chatState) SetAwaitingReplyTo(value string) {
 	e.AwaitingReplyTo = strings.TrimLeft(value, "/")
+	e.changed = true
 }
 
 // IsAwaitingReplyTo returns true if bot us awaiting reply to a specific command

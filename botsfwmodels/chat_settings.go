@@ -1,8 +1,8 @@
 package botsfwmodels
 
 type chatSettings struct {
-	PreferredLanguage string   `dalgo:",noindex,omitempty" datastore:",noindex,omitempty" firestore:",noindex,omitempty"`
-	LanguageCodes     []string `dalgo:",noindex,omitempty" datastore:",noindex,omitempty" firestore:",noindex,omitempty"` // UI languages
+	PreferredLanguage string   `dalgo:",noindex,omitempty" datastore:",noindex,omitempty" firestore:",omitempty"`
+	LanguageCodes     []string `dalgo:",noindex,omitempty" datastore:",noindex,omitempty" firestore:",omitempty"` // UI languages
 }
 
 // GetPreferredLanguage returns preferred language

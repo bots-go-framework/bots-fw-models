@@ -13,6 +13,7 @@ type BotChatStore interface {
 	GetBotChatData(c context.Context, key botsfwmodels.ChatKey) (chatData botsfwmodels.ChatData, err error)
 
 	// SaveBotChatData saves bot chat data to persistent storage
+	// TODO: Consider to remove key from params or eliminate ChatData.Key()
 	SaveBotChatData(c context.Context, key botsfwmodels.ChatKey, chatData botsfwmodels.ChatData) error
 
 	// Close closes the store, e.g. commits sends a signal to commit transaction

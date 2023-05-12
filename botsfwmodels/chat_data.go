@@ -8,11 +8,15 @@ import (
 type ChatData interface {
 	Base() *ChatBaseData // TODO: Document why this is needed or remove
 
-	GetBotID() (botID string)
-	SetBotID(botID string)
+	IsChanged() bool
 
-	//GetChatID() (chatID string)
+	GetBotID() (botID string)
+	//SetBotID(botID string)
+
+	GetChatID() (chatID string)
 	//SetChatID(chatID string)
+
+	Key() ChatKey
 
 	// GetAppUserID returns app user ID
 	GetAppUserID() (appUserID string)
