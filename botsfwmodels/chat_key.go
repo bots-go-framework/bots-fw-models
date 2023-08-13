@@ -2,6 +2,7 @@ package botsfwmodels
 
 import "github.com/strongo/validation"
 
+// NewChatKey creates a new chat key
 func NewChatKey(botID, chatID string) ChatKey {
 	if botID == "" {
 		panic("botID is required, got empty string")

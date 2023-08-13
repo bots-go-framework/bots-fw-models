@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-var _ ChatData = (*ChatBaseData)(nil)
+var _ BotChatData = (*ChatBaseData)(nil)
 
 // ChatBaseData hold common properties for bot chat entities not specific to any platform
 type ChatBaseData struct {
