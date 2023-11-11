@@ -7,7 +7,7 @@ type AppUserData interface {
 	LocaleSettings
 
 	// SetNames sets user record name fields using information provided by bot platform
-	SetNames(first, last, user string)
+	SetNames(first, last string)
 
 	// SetBotUserID associates bot user ID with an app user record
 	SetBotUserID(platform, botID, botUserID string)
