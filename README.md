@@ -8,5 +8,5 @@ DB models & DTO interfaces for [Bots Go Framework](https://github.com/bots-go-fr
 
 ## Interfaces
 
-- [BotUser](botsfwmodels/bot_user.go)
-- [BotChat](botsfwmodels/bot_chat.go)
+- [BotUser](botsfwmodels/bot_user_data.go)
+- [BotChat](botsfwmodels/chat_data.go)
