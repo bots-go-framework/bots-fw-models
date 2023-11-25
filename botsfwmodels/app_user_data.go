@@ -1,6 +1,7 @@
 package botsfwmodels
 
-// AppUserData holds information about bot app user
+// AppUserData is a record where information about app user is stored.
+// Bots can use it to  store information about a user like names, preferred locale.
 type AppUserData interface {
 
 	// SetBotUserID associates bot user ID with an app user record
