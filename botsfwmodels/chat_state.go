@@ -60,7 +60,7 @@ func (e *chatState) PopStepsFromAwaitingReplyUpToSpecificParent(step string) {
 			//steps = steps[:i]
 			break
 			// } else {
-			// log.Infof(c, "steps[%v]: %v != %v:", i, steps[i], step)
+			// logMessage.Infof(c, "steps[%v]: %v != %v:", i, steps[i], step)
 		}
 	}
 }
