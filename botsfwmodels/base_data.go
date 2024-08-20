@@ -8,27 +8,33 @@ import (
 // BotBaseData holds properties common to all bot entities
 type BotBaseData struct {
 	//user.OwnedByUserWithID
-	AppUserID string // intentionally indexed & do NOT omitempty (so we can find records with empty AppUserID)
+	AppUserID string `json:"appUserID" dalgo:"appUserID" firestore:"appUserID"` // intentionally indexed & do NOT omitempty (so we can find records with empty AppUserID)
 
 	// AppUserIntID is a strongly typed ID of the user
 	// Deprecated: use AppUserID instead, remove once all bots are migrated
 	//AppUserIntID int64 `json:",omitempty" datastore:",omitempty" firestore:",omitempty"`
 
-	DtCreated time.Time `json:",omitempty" datastore:",omitempty" firestore:",omitempty"`
-	DtUpdated time.Time `json:",omitempty" datastore:",omitempty" firestore:",omitempty"`
+	DtCreated time.Time `json:"dtCreated" dalgo:"dtCreated" datastore:"dtCreated" firestore:"dtCreated"`
+	DtUpdated time.Time `json:"dtUpdated" dalgo:"dtUpdated" datastore:"dtUpdated" firestore:"dtUpdated"`
 
 	// AccessGranted indicates if access to the bot has been granted
-	AccessGranted bool
+	AccessGranted bool `json:"isAccessGranted" dalgo:"isAccessGranted" datastore:"isAccessGranted" firestore:"isAccessGranted"`
 }
 
 // Validate returns error if data is invalid
 func (e *BotBaseData) Validate() error {
-	if e.DtUpdated.Before(e.DtCreated) {
-		return validation.NewErrBadRecordFieldValue("DtUpdated", "DtUpdated is before DtCreated")
+	if e.AppUserID == "" {
+		return validation.NewErrRecordIsMissingRequiredField("AppUserID")
 	}
-	//if e.AppUserID != "" && e.AppUserIntID != 0 && strconv.FormatInt(e.AppUserIntID, 10) != e.AppUserID {
-	//	return validation.NewErrBadRecordFieldValue("AppUserIntID", "does not match AppUserID")
-	//}
+	if e.DtCreated.IsZero() {
+		return validation.NewErrRecordIsMissingRequiredField("DtCreated")
+	}
+	if e.DtUpdated.IsZero() {
+		return validation.NewErrRecordIsMissingRequiredField("dtUpdated")
+	}
+	if e.DtUpdated.Before(e.DtCreated) {
+		return validation.NewErrBadRecordFieldValue("dtUpdated", "is before dtCreated")
+	}
 	return nil
 }
 
