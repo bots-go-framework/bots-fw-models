@@ -15,11 +15,11 @@ type ChatBaseData struct {
 
 	//ChatKey // BotID & ChatID
 
-	// BotUserID is an ID of a bot user who owns this chat
-	BotUserID string // We want it to be indexed and not to omitempty, to find chats without an assigned bot user.
+	//// BotUserID is an ID of a bot user who owns this chat
+	//BotUserID string // We want it to be indexed and not to omitempty, to find chats without an assigned bot user.
 
-	// BotUserIDs keeps ids of bot users who are members of a group chat
-	BotUserIDs []string `dalgo:",omitempty" datastore:",omitempty" firestore:",omitempty"`
+	// BotUserIDs keeps ids of bot users who are members of a group chat or a single user ID if it's a chat with bot
+	BotUserIDs []string `firestore:"botUserIDs,omitempty"`
 
 	BotBaseData
 	chatState
@@ -30,29 +30,24 @@ type ChatBaseData struct {
 	//AppUserIntIDs []int64 `dalgo:",omitempty" datastore:",omitempty" firestore:",omitempty"`
 
 	// IsGroup indicates if bot is added/used in a group chat
-	IsGroup bool `dalgo:",noindex,omitempty" datastore:",noindex,omitempty" firestore:",omitempty"`
+	IsGroup bool `firestore:"isGroup,omitempty"`
 
-	// Type - TODO: document what is it
-	Type string `dalgo:",noindex,omitempty" datastore:",noindex,omitempty" firestore:",omitempty"`
+	Type string `firestore:"type,omitempty"` // TODO: document what is it & why needed or remove
 
 	// Title stores a title of a chat if bot platforms supports named chats
-	Title string `dalgo:",noindex,omitempty" datastore:",noindex,omitempty" firestore:",omitempty"`
-
-	// GAClientID is Google Analytics client ID
-	// Deprecated: use GAClientIDs AnalyticsClientIDs
-	GaClientID []byte `dalgo:",noindex,omitempty" datastore:",noindex,omitempty" firestore:",omitempty"`
+	Title string `firestore:"title,omitempty"`
 
 	// AnalyticsClientIDs stores IDs of analytics clients. For example {"GA": "1234567890.1234567890"}
-	AnalyticsClientIDs map[string]string `dalgo:",noindex,omitempty" datastore:",noindex,omitempty" firestore:",omitempty"`
+	AnalyticsClientIDs map[string]string `firestore:"analyticsClientIDs,omitempty"`
 
 	// DtLastInteraction must be set through SetDtLastInteraction() as it also increments InteractionsCount
-	DtLastInteraction time.Time `dalgo:",omitempty" datastore:",omitempty" firestore:",omitempty"`
+	DtLastInteraction time.Time `firestore:"dtLastInteraction"`
 
 	// InteractionsCount is a number of interactions with a bot in this chat
-	InteractionsCount int `dalgo:",omitempty" datastore:",omitempty" firestore:",omitempty"`
+	InteractionsCount int `firestore:"interactionsCount,omitempty"`
 
 	// DtForbidden is a time when bot was forbidden to interact with a chat
-	DtForbidden time.Time `dalgo:",omitempty" datastore:",omitempty" firestore:",omitempty"`
+	DtForbidden time.Time `firestore:"dtForbidden,omitempty"`
 
 	// DtForbiddenLast needs documentation on intended usage. TODO: Consider removing
 	DtForbiddenLast time.Time `dalgo:",omitempty" datastore:",omitempty" firestore:",omitempty"`
@@ -62,8 +57,16 @@ func (e *ChatBaseData) Validate() error {
 	//if err := e.ChatKey.Validate(); err != nil {
 	//	return err
 	//}
-	if strings.TrimSpace(e.BotUserID) == "" {
-		return validation.NewErrBadRecordFieldValue("BotUserID", "is empty")
+	if len(e.BotUserIDs) == 0 {
+		return validation.NewErrRecordIsMissingRequiredField("botUserIDs")
+	}
+	for i, botUserID := range e.BotUserIDs {
+		if botUserID == "" {
+			return validation.NewErrBadRecordFieldValue(fmt.Sprintf("botUserIDs[%d]", i), "is empty string")
+		}
+		if strings.TrimSpace(botUserID) == botUserID {
+			return validation.NewErrBadRecordFieldValue(fmt.Sprintf("botUserIDs[%d]", i), "has leading or trailing spaces")
+		}
 	}
 	if e.DtForbiddenLast.Before(e.DtForbidden) {
 		return validation.NewErrBadRecordFieldValue("DtForbidden", fmt.Sprintf("DtForbiddenLast(%v) is before DtForbidden(%v)", e.DtForbiddenLast, e.DtForbidden))
