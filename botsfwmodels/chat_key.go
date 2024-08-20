@@ -7,13 +7,13 @@ func NewChatKey(botID, chatID string) ChatKey {
 	if botID == "" {
 		panic("botID is required, got empty string")
 	}
-	if botID == "" {
+	if chatID == "" {
 		panic("chatID is required, got empty string")
 	}
 	return ChatKey{BotID: botID, ChatID: chatID}
 }
 
-// ChatKey is a key for a chat that consist of bot ID and chat ID.
+// ChatKey is a key for a chat that consists of bot ID and chat ID.
 type ChatKey struct {
 	// BotID an id of a bot that owns this chat
 	BotID string
