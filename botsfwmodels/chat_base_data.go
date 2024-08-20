@@ -13,10 +13,10 @@ var _ BotChatData = (*ChatBaseData)(nil)
 type ChatBaseData struct {
 	changed bool // if true needs to be saved
 
-	ChatKey // BotID & ChatID
+	//ChatKey // BotID & ChatID
 
-	// BotUserID is and ID of a bot user who owns this chat
-	BotUserID string // We want it to be indexed and not to omit empty, so we can find chats without bot user assigned.
+	// BotUserID is an ID of a bot user who owns this chat
+	BotUserID string // We want it to be indexed and not to omitempty, to find chats without an assigned bot user.
 
 	// BotUserIDs keeps ids of bot users who are members of a group chat
 	BotUserIDs []string `dalgo:",omitempty" datastore:",omitempty" firestore:",omitempty"`
@@ -27,7 +27,7 @@ type ChatBaseData struct {
 
 	// AppUserIntIDs is kept for legacy reasons
 	// Deprecated: replace with `AppUserIDs []string`
-	AppUserIntIDs []int64 `dalgo:",omitempty" datastore:",omitempty" firestore:",omitempty"`
+	//AppUserIntIDs []int64 `dalgo:",omitempty" datastore:",omitempty" firestore:",omitempty"`
 
 	// IsGroup indicates if bot is added/used in a group chat
 	IsGroup bool `dalgo:",noindex,omitempty" datastore:",noindex,omitempty" firestore:",omitempty"`
@@ -59,9 +59,9 @@ type ChatBaseData struct {
 }
 
 func (e *ChatBaseData) Validate() error {
-	if err := e.ChatKey.Validate(); err != nil {
-		return err
-	}
+	//if err := e.ChatKey.Validate(); err != nil {
+	//	return err
+	//}
 	if strings.TrimSpace(e.BotUserID) == "" {
 		return validation.NewErrBadRecordFieldValue("BotUserID", "is empty")
 	}
@@ -78,19 +78,19 @@ func (e *ChatBaseData) Base() *ChatBaseData {
 	return e
 }
 
-// Indicates that chat data has been changed and record needs to be saved
+// IsChanged indicates that chat data has been changed and record needs to be saved
 func (e *ChatBaseData) IsChanged() bool {
 	return e.changed || e.chatState.changed
 }
 
-func (e *ChatBaseData) Key() ChatKey {
-	return NewChatKey(e.BotID, e.ChatID)
-}
+//func (e *ChatBaseData) Key() ChatKey {
+//	return NewChatKey(e.BotID, e.ChatID)
+//}
 
 // GetBotID returns bot ID
-func (e *ChatBaseData) GetBotID() string {
-	return e.BotID
-}
+//func (e *ChatBaseData) GetBotID() string {
+//	return e.BotID
+//}
 
 //// SetBotID sets bot ID - TODO: consider removing?
 //func (e *ChatBaseData) SetBotID(botID string) {
@@ -99,9 +99,9 @@ func (e *ChatBaseData) GetBotID() string {
 //}
 
 // GetChatID returns chat ID
-func (e *ChatBaseData) GetChatID() string {
-	return e.ChatID
-}
+//func (e *ChatBaseData) GetChatID() string {
+//	return e.ChatID
+//}
 
 //// SetChatID sets chat ID
 //func (e *ChatBaseData) SetChatID(chatID string) {

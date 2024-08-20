@@ -13,16 +13,16 @@ type BotChatData interface {
 	IsChanged() bool
 
 	// GetBotID returns bot ID
-	GetBotID() (botID string)
+	//GetBotID() (botID string)
 
 	//SetBotID(botID string)
 
 	// GetChatID returns chat ID
-	GetChatID() (chatID string)
+	//GetChatID() (chatID string)
 	//SetChatID(chatID string)
 
 	// Key returns chat key
-	Key() ChatKey
+	//Key() ChatKey
 
 	// GetAppUserID returns app user ID
 	GetAppUserID() (appUserID string)
