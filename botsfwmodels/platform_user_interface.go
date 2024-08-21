@@ -4,11 +4,11 @@ import (
 	"time"
 )
 
-// BotUserData interface provides information about bot user
+// PlatformUserData interface provides information about bot user
 // This should be implemented by bot user record struct.
-type BotUserData interface {
+type PlatformUserData interface {
 	// BaseData returns base data that should be implemented by all bot user structs
-	BaseData() *BotUserBaseData
+	BaseData() *PlatformUserBaseDbo
 
 	// GetAppUserID returns app user ID if available
 	GetAppUserID() string

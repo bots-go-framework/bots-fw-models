@@ -8,7 +8,7 @@ func TestNewBotRecordsMaker(t *testing.T) {
 	type args struct {
 		platform       string
 		makeAppUserDto func(botID string) (appUser AppUserData, err error)
-		makeBotUserDto func(botID string) (botUser BotUserData, err error)
+		makeBotUserDto func(botID string) (botUser PlatformUserData, err error)
 		makeBotChatDto func(botID string) (botChat BotChatData, err error)
 	}
 
@@ -16,7 +16,7 @@ func TestNewBotRecordsMaker(t *testing.T) {
 		return nil, nil
 	}
 
-	makeBotUserDto := func(botID string) (botUser BotUserData, err error) {
+	makeBotUserDto := func(botID string) (botUser PlatformUserData, err error) {
 		return nil, nil
 	}
 

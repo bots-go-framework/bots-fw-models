@@ -10,7 +10,7 @@ type BotRecordsMaker interface {
 	MakeAppUserDto(botID string) (AppUserData, error)
 
 	// MakeBotUserDto makes bot user DTO for a given request sender
-	MakeBotUserDto(botID string) (BotUserData, error)
+	MakeBotUserDto(botID string) (PlatformUserData, error)
 
 	// MakeBotChatDto makes bot chat DTO for a given request
 	MakeBotChatDto(botID string) (BotChatData, error)
@@ -19,7 +19,7 @@ type BotRecordsMaker interface {
 func NewBotRecordsMaker(
 	platform string,
 	makeAppUserDto func(botID string) (appUser AppUserData, err error),
-	makeBotUserDto func(botID string) (botUser BotUserData, err error),
+	makeBotUserDto func(botID string) (botUser PlatformUserData, err error),
 	makeBotChatDto func(botID string) (botChat BotChatData, err error),
 ) BotRecordsMaker {
 	if makeAppUserDto == nil {
@@ -42,7 +42,7 @@ func NewBotRecordsMaker(
 type botRecordsMaker struct {
 	platform       string
 	makeAppUserDto func(botID string) (AppUserData, error)
-	makeBotUserDto func(botID string) (BotUserData, error)
+	makeBotUserDto func(botID string) (PlatformUserData, error)
 	makeBotChatDto func(botID string) (botChat BotChatData, err error)
 }
 
@@ -54,7 +54,7 @@ func (b botRecordsMaker) MakeAppUserDto(botID string) (AppUserData, error) {
 	return b.makeAppUserDto(botID)
 }
 
-func (b botRecordsMaker) MakeBotUserDto(botID string) (BotUserData, error) {
+func (b botRecordsMaker) MakeBotUserDto(botID string) (PlatformUserData, error) {
 	return b.makeBotUserDto(botID)
 }
 
