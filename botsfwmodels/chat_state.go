@@ -7,8 +7,8 @@ import (
 )
 
 type chatState struct {
-	changed         bool
-	AwaitingReplyTo string `dalgo:",noindex,omitempty" datastore:",noindex,omitempty" firestore:",omitempty"`
+	changed         bool   // TODO: consider replacing with dal.Record.MarkAsChanged()
+	AwaitingReplyTo string `dalgo:"awaitingReplyTo,noindex,omitempty" firestore:"awaitingReplyTo,omitempty"`
 }
 
 func (e *chatState) IsChanged() bool {

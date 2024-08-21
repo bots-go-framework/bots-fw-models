@@ -1,8 +1,8 @@
 package botsfwmodels
 
 type chatSettings struct {
-	PreferredLanguage string   `dalgo:",noindex,omitempty" datastore:",noindex,omitempty" firestore:",omitempty"`
-	LanguageCodes     []string `dalgo:",noindex,omitempty" datastore:",noindex,omitempty" firestore:",omitempty"` // UI languages
+	PreferredLanguage string   `dalgo:"preferredLanguage,noindex,omitempty" firestore:"preferredLanguage,omitempty"`
+	LanguageCodes     []string `dalgo:"languageCodes,noindex,omitempty" firestore:"languageCodes,omitempty"` // UI languages
 }
 
 // GetPreferredLanguage returns preferred language
@@ -26,5 +26,8 @@ func (e *chatSettings) AddClientLanguage(languageCode string) (changed bool) {
 		}
 	}
 	e.LanguageCodes = append(e.LanguageCodes, languageCode)
+	if e.PreferredLanguage == "" {
+		e.PreferredLanguage = languageCode
+	}
 	return false
 }
