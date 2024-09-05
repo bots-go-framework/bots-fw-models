@@ -23,11 +23,11 @@ type BotBaseData struct {
 
 // Validate returns error if data is invalid
 func (e *BotBaseData) Validate() error {
-	if e.AppUserID == "" {
-		return validation.NewErrRecordIsMissingRequiredField("AppUserID")
-	}
+	//if e.AppUserID == "" {
+	//	return validation.NewErrRecordIsMissingRequiredField("appUserID")
+	//}
 	if e.DtCreated.IsZero() {
-		return validation.NewErrRecordIsMissingRequiredField("DtCreated")
+		return validation.NewErrRecordIsMissingRequiredField("dtCreated")
 	}
 	if e.DtUpdated.IsZero() {
 		return validation.NewErrRecordIsMissingRequiredField("dtUpdated")
