@@ -6,7 +6,7 @@ var _ PlatformUserData = (*PlatformUserBaseDbo)(nil)
 type PlatformUserBaseDbo struct {
 	BotBaseData
 
-	BotIDs []string `json:"botIDs,omitempty" dalgo:"botIDs,omitempty,noindex" firestore:"botIDs,omitempty"`
+	WithRequiredBotIDs
 
 	// FirstName is the first name of a user
 	FirstName string `json:"firstName,omitempty" dalgo:"firstName,omitempty,noindex" firestore:"firstName,omitempty"`
@@ -21,4 +21,14 @@ type PlatformUserBaseDbo struct {
 // BaseData returns base data of a user that should be included in all structs that implement PlatformUserData
 func (v *PlatformUserBaseDbo) BaseData() *PlatformUserBaseDbo {
 	return v
+}
+
+func (v *PlatformUserBaseDbo) Validate() error {
+	if err := v.BotBaseData.Validate(); err != nil {
+		return err
+	}
+	if err := v.WithRequiredBotIDs.Validate(); err != nil {
+		return err
+	}
+	return nil
 }
