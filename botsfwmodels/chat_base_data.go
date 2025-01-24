@@ -24,6 +24,7 @@ type ChatBaseData struct {
 	BotBaseData
 	chatState
 	chatSettings
+	chatVars
 
 	// AppUserIntIDs is kept for legacy reasons
 	// Deprecated: replace with `AppUserIDs []string`

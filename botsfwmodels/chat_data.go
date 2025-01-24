@@ -86,6 +86,11 @@ type BotChatData interface {
 	// PushStepToAwaitingReplyTo pushes step to awaiting reply to
 	PushStepToAwaitingReplyTo(code string)
 	//GetGaClientID() string
+
+	SetVar(key string, value string)
+	GetVar(key string) string
+	DelVar(key string)
+	HasChangedVars() bool
 }
 
 // NewChatID create a new bot chat ID, returns string
